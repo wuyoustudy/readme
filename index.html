@@ -139,6 +139,14 @@
             letter-spacing: -0.01em;
             max-width: 600px;
         }
+        .hero-sub {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            font-weight: 300;
+            letter-spacing: 0.01em;
+            max-width: 600px;
+            opacity: 0.8;
+        }
         .hero-divider {
             width: 48px;
             height: 3px;
@@ -161,6 +169,25 @@
             line-height: 1.85;
             color: var(--text-muted);
             max-width: 600px;
+        }
+        .about-en {
+            font-size: 1.1rem;
+            color: var(--text);
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+        .about-cn {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+            font-weight: 300;
+        }
+        .about-divider {
+            width: 32px;
+            height: 2px;
+            background: linear-gradient(90deg, #c9a96e, #8b7a9e);
+            border-radius: 1px;
+            margin: 28px 0;
         }
 
         /* ── Cards ── */
@@ -254,18 +281,26 @@
         <section class="hero">
             <div class="hero-avatar">J</div>
             <h1>Hey, I'm JHP</h1>
-            <p class="hero-tagline">Engineer · 用代码构建所想，让技术为创造服务。</p>
+            <p class="hero-tagline">Engineer</p>
+            <p class="hero-sub">Crafting ideas into code · 把想法写成代码</p>
             <div class="hero-divider"></div>
         </section>
 
         <!-- About -->
         <section id="about">
             <div class="section-title">About</div>
-            <p class="about-text">
-                我是一个热爱技术、追求极致的 Engineer。始终相信简洁优雅的代码能带来最好的产品体验。
+            <p class="about-text about-en">
+                I'm an Engineer who loves building things &mdash; turning complex problems into simple, elegant solutions.
             </p>
-            <p class="about-text" style="margin-top:16px;">
-                我的日常游走于系统设计、性能优化与工程效率之间。喜欢从零到一搭建可靠的基础设施，也享受在复杂问题中寻找简单解法的过程。工作之外，热衷探索新的技术栈，保持对世界的好奇心。
+            <p class="about-text about-cn">
+                热爱技术，追求极致。始终相信简洁优雅的代码能带来最好的产品体验。
+            </p>
+            <div class="about-divider"></div>
+            <p class="about-text about-en">
+                My daily work spans system design, performance tuning, and developer tooling. I enjoy building reliable infrastructure from scratch and finding clarity within complexity. Off the clock, I explore new tech stacks and keep curiosity alive.
+            </p>
+            <p class="about-text about-cn">
+                日常游走于系统设计、性能优化与工程效率之间。喜欢从零到一搭建可靠的基础设施，享受在复杂中寻找简洁。工作之外，热衷探索新技术，保持对世界的好奇心。
             </p>
         </section>
 
