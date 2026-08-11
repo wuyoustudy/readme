@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact · JHP</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        @keyframes gradientFlow {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body {
+            font-family: "Source Serif 4", "Noto Serif SC", Georgia, "Songti SC", "SimSun", serif;
+            color: #f0ebe3;
+            line-height: 1.75;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 0;
+            padding: 40px 24px;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background: linear-gradient(135deg, #0a0a0b 0%, #18181b 30%, #1a101a 60%, #0f1218 100%);
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background: radial-gradient(ellipse at 20% 50%, rgba(140,120,160,0.12) 0%, transparent 50%),
+                        radial-gradient(ellipse at 80% 20%, rgba(160,130,100,0.10) 0%, transparent 50%),
+                        radial-gradient(ellipse at 50% 80%, rgba(120,140,160,0.08) 0%, transparent 50%);
+            background-size: 200% 200%;
+            animation: gradientFlow 14s ease infinite;
+            pointer-events: none;
+        }
+
+        .back-link {
+            position: fixed;
+            top: 24px;
+            left: 24px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #948f88;
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 8px 18px;
+            border: 1px solid #2a2825;
+            border-radius: 100px;
+            background: #141413;
+            transition: all 0.25s;
+            z-index: 10;
+        }
+        .back-link:hover {
+            color: #f0ebe3;
+            border-color: #948f88;
+            background: #1c1b19;
+        }
+
+        .card {
+            background: #141413;
+            border: 1px solid #2a2825;
+            border-radius: 16px;
+            padding: 48px 40px;
+            max-width: 480px;
+            width: 100%;
+            z-index: 1;
+        }
+
+        .card h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+        .card p {
+            color: #948f88;
+            font-size: 0.95rem;
+            margin-bottom: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.82rem;
+            color: #948f88;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+        .form-group textarea {
+            width: 100%;
+            min-height: 160px;
+            background: #0a0a0b;
+            border: 1px solid #2a2825;
+            border-radius: 10px;
+            padding: 16px;
+            color: #f0ebe3;
+            font-family: inherit;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.25s;
+        }
+        .form-group textarea:focus {
+            border-color: #948f88;
+        }
+        .form-group textarea::placeholder {
+            color: #4a4540;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px 24px;
+            background: linear-gradient(135deg, #c9a96e, #8b7a9e);
+            color: #0a0a0b;
+            border: none;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: 0.02em;
+            transition: opacity 0.25s, transform 0.15s;
+        }
+        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn:active { transform: translateY(0); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .status {
+            margin-top: 16px;
+            font-size: 0.88rem;
+            text-align: center;
+            min-height: 24px;
+        }
+        .status.success { color: #86c98e; }
+        .status.error { color: #e0887a; }
+
+        @media (max-width: 500px) {
+            .card { padding: 36px 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-link">&larr; 返回首页</a>
+
+    <div class="card">
+        <h1>Get in touch</h1>
+        <p>Send me a message and I'll get back to you.</p>
+
+        <form id="contactForm">
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" placeholder="Write your message here..." required></textarea>
+            </div>
+            <button type="submit" class="btn" id="sendBtn">Send Message</button>
+        </form>
+        <div class="status" id="status"></div>
+    </div>
+
+    <script>
+    (function() {
+        const RECIPIENT = "carter.jia@gmail.com";
+
+        const form   = document.getElementById("contactForm");
+        const btn    = document.getElementById("sendBtn");
+        const status = document.getElementById("status");
+        const msgEl  = document.getElementById("message");
+
+        form.addEventListener("submit", async function(e) {
+            e.preventDefault();
+            const text = msgEl.value.trim();
+            if (!text) return;
+
+            btn.disabled = true;
+            btn.textContent = "Sending...";
+            status.textContent = "";
+            status.className = "status";
+
+            try {
+                const resp = await fetch("https://formsubmit.co/ajax/" + RECIPIENT, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        name:    "Website Contact",
+                        message: text
+                    })
+                });
+
+                if (resp.ok) {
+                    status.textContent = "Message sent! I'll get back to you soon.";
+                    status.className = "status success";
+                    msgEl.value = "";
+                } else {
+                    throw new Error("Server responded with " + resp.status);
+                }
+            } catch (err) {
+                status.textContent = "Failed to send. Please try again later.";
+                status.className = "status error";
+            }
+
+            btn.disabled = false;
+            btn.textContent = "Send Message";
+        });
+    })();
+    </script>
+
+</body>
+</html>
