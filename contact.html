@@ -153,6 +153,19 @@
         .status.success { color: #86c98e; }
         .status.error { color: #e0887a; }
 
+        .local-time {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid #2a2825;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 0.82rem;
+            color: #948f88;
+        }
+        .local-time .city { color: #6b665f; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.72rem; }
+        .local-time .time { color: #c9c3ba; font-variant-numeric: tabular-nums; }
+
         @media (max-width: 500px) {
             .card { padding: 36px 24px; }
         }
@@ -173,6 +186,10 @@
             </div>
             <button type="submit" class="btn" id="sendBtn">Send Message</button>
         </form>
+        <div class="local-time" id="localTime">
+            <div><span class="city">China (Beijing)</span> — <span class="time" id="timeCN">--:--:--</span></div>
+            <div><span class="city">California (LA)</span> — <span class="time" id="timeUS">--:--:--</span></div>
+        </div>
         <div class="status" id="status"></div>
     </div>
 
@@ -184,6 +201,26 @@
         const btn    = document.getElementById("sendBtn");
         const status = document.getElementById("status");
         const msgEl  = document.getElementById("message");
+
+        const timeCN = document.getElementById("timeCN");
+        const timeUS = document.getElementById("timeUS");
+        const fmtCN  = new Intl.DateTimeFormat("zh-CN", {
+            timeZone: "Asia/Shanghai",
+            year: "numeric", month: "2-digit", day: "2-digit",
+            hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
+        });
+        const fmtUS  = new Intl.DateTimeFormat("en-US", {
+            timeZone: "America/Los_Angeles",
+            year: "numeric", month: "2-digit", day: "2-digit",
+            hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true
+        });
+        function tick() {
+            const now = new Date();
+            timeCN.textContent = fmtCN.format(now);
+            timeUS.textContent = fmtUS.format(now);
+        }
+        tick();
+        setInterval(tick, 1000);
 
         form.addEventListener("submit", async function(e) {
             e.preventDefault();
