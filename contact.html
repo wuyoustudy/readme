@@ -209,10 +209,10 @@
             year: "numeric", month: "2-digit", day: "2-digit",
             hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
         });
-        const fmtUS  = new Intl.DateTimeFormat("en-US", {
+        const fmtUS  = new Intl.DateTimeFormat("zh-CN", {
             timeZone: "America/Los_Angeles",
             year: "numeric", month: "2-digit", day: "2-digit",
-            hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true
+            hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
         });
         function tick() {
             const now = new Date();
@@ -233,12 +233,18 @@
             status.className = "status";
 
             try {
+                const now = new Date();
+                const timeFooter =
+                    "\n\n—\n发送时间 Sent at\n" +
+                    "中国时间 China (Beijing): " + fmtCN.format(now) + "\n" +
+                    "美国加州时间 California (LA): " + fmtUS.format(now);
+
                 const resp = await fetch("https://formsubmit.co/ajax/" + RECIPIENT, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         name:    "Website Contact",
-                        message: text
+                        message: text + timeFooter
                     })
                 });
 
